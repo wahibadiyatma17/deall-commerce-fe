@@ -19,7 +19,7 @@ const NavigationItem: FC<NavigationItemProps> = (props) => {
   const isPageActive = pageActive.includes(children.toString().toLowerCase());
 
   return (
-    <StyledNavigationItem onClick={() => {}} css={cssNavigationItem(isPageActive)}>
+    <StyledNavigationItem onClick={() => router.push(url)} css={cssNavigationItem(isPageActive)}>
       {icon && (
         <Icon
           mr="4"

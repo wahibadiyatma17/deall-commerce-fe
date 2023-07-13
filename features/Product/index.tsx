@@ -2,12 +2,12 @@ import Layout from '@/components/Layout';
 import React, { FC } from 'react';
 import 'twin.macro';
 
-const Home: FC = () => {
+const Product: FC = () => {
   return (
     <Layout>
-      <div tw="font-bold">HOME</div>
+      <div tw="font-bold">Product</div>
     </Layout>
   );
 };
 
-export default Home;
+export default Product;

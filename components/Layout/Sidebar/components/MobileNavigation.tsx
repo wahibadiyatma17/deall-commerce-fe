@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Avatar, IconButton, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import router, { useRouter } from 'next/router';
 import { useWindowSize } from 'usehooks-ts';
 import { FiMenu, FiChevronDown } from 'react-icons/fi';
 import { IoLogInOutline } from 'react-icons/io5';
@@ -17,6 +17,17 @@ type MobileNavigationProps = BaseMobileNavigationProps;
 const MobileNavigation: FC<MobileNavigationProps> = (props) => {
   const { onOpen } = props;
   const isMobile = useWindowSize().width < 768;
+  const [pageTitle, setPageTitle] = useState('');
+
+  useEffect(() => {
+    if (router.pathname === '/') {
+      setPageTitle('Home');
+    } else if (router.pathname === '/product') {
+      setPageTitle('Product');
+    } else if (router.pathname === '/cart') {
+      setPageTitle('Cart');
+    }
+  }, []);
 
   if (isMobile)
     return (
@@ -48,7 +59,7 @@ const MobileNavigation: FC<MobileNavigationProps> = (props) => {
       <div tw="flex items-center z-50 bg-white fixed top-0 w-[calc(100%-15rem)] min-h-[5rem] h-[max-content] justify-between md:(ml-[15rem] justify-end)">
         <div tw="flex flex-col w-full h-full p-[1rem] shadow-md md:(gap-4)">
           <div tw="flex items-center justify-between">
-            <h1 tw="text-4xl font-bold text-[#601BD0] capitalize">Home</h1>
+            <h1 tw="text-4xl font-bold text-[#601BD0] capitalize">{pageTitle}</h1>
 
             <Menu>
               <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
