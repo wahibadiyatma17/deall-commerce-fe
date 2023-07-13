@@ -1,0 +1,40 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:react/recommended", "prettier", "next/core-web-vitals"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["unused-imports", "react", "@typescript-eslint"],
+  "rules": {
+    "camelcase": "off",
+    "require-jsdoc": 0,
+    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "no-console": "off",
+    "@next/next/no-img-element": "warn",
+    "react/no-unknown-property": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/display-name": "off"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

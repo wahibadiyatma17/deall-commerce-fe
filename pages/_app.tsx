@@ -1,6 +1,23 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import type { AppProps } from 'next/app';
+import 'twin.macro';
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+import { ChakraProvider } from '@chakra-ui/react';
+import { Toaster } from 'react-hot-toast';
+import { QueryClientProvider } from 'react-query';
+
+import queryClient from '@/commons/config/react-query.config';
+
+import 'styles/globals.css';
+
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider>
+        <Toaster containerStyle={{ zIndex: 10000 }} position="top-center" reverseOrder={false} />
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </QueryClientProvider>
+  );
 }
+
+export default MyApp;
