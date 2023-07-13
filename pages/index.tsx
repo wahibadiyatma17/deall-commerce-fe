@@ -1,12 +1,9 @@
+import Home from '@/features/Home';
 import React, { FC } from 'react';
 import 'twin.macro';
 
 const HomePage: FC = () => {
-  return (
-    <div tw="w-screen h-screen bg-red-500">
-      <span>Home</span>
-    </div>
-  );
+  return <Home />;
 };
 
 export default HomePage;
