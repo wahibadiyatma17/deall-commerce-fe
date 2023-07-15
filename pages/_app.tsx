@@ -3,7 +3,7 @@ import 'twin.macro';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { Toaster } from 'react-hot-toast';
-import { QueryClientProvider } from 'react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 import queryClient from '@/commons/config/react-query.config';
 

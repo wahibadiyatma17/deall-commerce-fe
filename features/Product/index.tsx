@@ -9,6 +9,7 @@ import Input from '@/components/Forms/Text/TextInput';
 import { Pagination } from '@/components/Pagination';
 import { Table } from '@/components/Table';
 import TableExample from '@/components/Table/example';
+import { productApiHooks } from '@/commons/api/product.api';
 
 const Product: FC = () => {
   const [searchName, setSearchName] = useState('');
@@ -23,6 +24,9 @@ const Product: FC = () => {
       setPage(1);
     }, 700);
   };
+
+  const { data: productData } = productApiHooks.useAllProducts();
+
   return (
     <Layout>
       <StyledProductHome>
@@ -33,7 +37,7 @@ const Product: FC = () => {
                 name={'search'}
                 type={'text'}
                 customPrefix={<FiSearch />}
-                placeholder={'Cari judul atau ID pengadaan'}
+                placeholder={'Search product title'}
                 value={searchName}
                 onChange={(event: any) => {
                   setSearchName(event.target.value);
@@ -63,9 +67,9 @@ const Product: FC = () => {
                 thickness="0.25rem"
                 speed="0.5s"
                 emptyColor="gray.200"
-                color="#EAA249"
+                color="#601BD0"
               />
-              <span tw="text-sm font-semibold text-[#EAA249]">Loading...</span>
+              <span tw="text-sm font-semibold text-[#601BD0]">Loading...</span>
             </div>
           ) : (
             <TableExample />
