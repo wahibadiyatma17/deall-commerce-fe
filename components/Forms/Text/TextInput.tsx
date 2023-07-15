@@ -2,7 +2,7 @@ import React from 'react';
 import { BiErrorCircle } from 'react-icons/bi';
 import { styled } from 'twin.macro';
 
-import { InputProps } from 'common/types/input';
+import { InputProps } from '@/commons/type/inpit.type';
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {
@@ -135,7 +135,7 @@ export const StyledInputWrapper = styled.div<
   }
 
   &:focus-within {
-    border: 1.5px solid #eaa249;
+    border: 1.5px solid #601bd0;
   }
 `;
 
