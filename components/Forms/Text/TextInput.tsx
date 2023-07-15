@@ -2,7 +2,7 @@ import React from 'react';
 import { BiErrorCircle } from 'react-icons/bi';
 import { styled } from 'twin.macro';
 
-import { InputProps } from '@/commons/type/inpit.type';
+import { InputProps } from '@/commons/type/input.type';
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {

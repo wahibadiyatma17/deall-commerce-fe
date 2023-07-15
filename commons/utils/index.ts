@@ -6,6 +6,7 @@
  * @returns The converted string in title case.
  */
 
+import React from 'react';
 import { PaginationParams, PaginationResult } from '../type/pagination.type';
 
 export function convertToTitleCase(input: string): string {
@@ -66,3 +67,6 @@ export function convertToLimitAndSkip(pagination: PaginationParams): PaginationR
     skip,
   };
 }
+
+export const getChildrenOnDisplayName = (children: any, displayName: string) =>
+  React.Children.map(children, (child) => (child.type.displayName === displayName ? child : null));
