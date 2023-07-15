@@ -25,9 +25,6 @@ const SidebarContent: FC<SidebarContentProps> = (props) => {
   const queryClient = useQueryClient();
   const isMobile = useWindowSize().width < 768;
   const router = useRouter();
-
-  const excludeAdminSettings = ['Pengaturan'];
-
   return (
     <div tw="fixed flex flex-col gap-4 h-full w-full border-r-[1px] border-solid bg-white md:(w-[15rem] py-4 )">
       <div tw="flex justify-between items-center mx-6 my-4">

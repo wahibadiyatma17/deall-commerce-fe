@@ -17,6 +17,9 @@ const NavigationItem: FC<NavigationItemProps> = (props) => {
   const router = useRouter();
   const [pageActive, setPageActive] = useState(router.pathname);
   const isPageActive = pageActive.includes(children.toString().toLowerCase());
+  useEffect(() => {
+    if (pageActive === '/') setPageActive('home');
+  }, [pageActive]);
 
   return (
     <StyledNavigationItem onClick={() => router.push(url)} css={cssNavigationItem(isPageActive)}>
