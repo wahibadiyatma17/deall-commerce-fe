@@ -152,8 +152,8 @@ export const StyledPagination = styled.div`
     border: none;
     width: 1.875rem;
     height: 1.875rem;
-    background-color: #fff9e1;
-    color: #eaa249;
+    background-color: #d6c1f9;
+    color: #601bd0;
     margin: 0 0.25rem;
     cursor: pointer;
   }
@@ -167,7 +167,7 @@ export const StyledPagination = styled.div`
 
     font-size: 0.625rem;
     font-weight: 600;
-    color: #eaa249;
+    color: #601bd0;
     background-color: #ffffff;
 
     @media and (min-width: 1024px) {
@@ -185,8 +185,8 @@ export const StyledPagination = styled.div`
 `;
 
 export const StyledPageNumber = styled.button<StyledPaginationProps>`
-  color: ${(props) => (props.currentPage === props.index ? '#FFFFFF' : '#EAA249')};
-  background-color: ${(props) => (props.currentPage === props.index ? '#EAA249' : '#FFFFFF')};
+  color: ${(props) => (props.currentPage === props.index ? '#FFFFFF' : '#601BD0')};
+  background-color: ${(props) => (props.currentPage === props.index ? '#601BD0' : '#FFFFFF')};
 
   width: 2rem;
   height: 1.875rem;
@@ -200,7 +200,7 @@ export const StyledPageNumber = styled.button<StyledPaginationProps>`
   cursor: pointer;
 
   :hover {
-    background-color: #eaa249;
+    background-color: #601bd0;
     color: #ffffff;
   }
 `;
