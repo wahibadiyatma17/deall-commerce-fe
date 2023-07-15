@@ -20,3 +20,13 @@ export type StyledPaginationProps = {
   index: number;
   currentPage: number;
 };
+
+export interface PaginationParams {
+  page: number;
+  page_size: number;
+}
+
+export interface PaginationResult {
+  limit: number;
+  skip: number;
+}

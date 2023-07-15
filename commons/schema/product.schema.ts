@@ -14,6 +14,8 @@ export const productSchema = z.object({
   images: z.array(z.string()),
 });
 
+export type ProductType = z.infer<typeof productSchema>;
+
 export const productsSchema = z.object({
   products: z.array(productSchema),
   total: z.number(),
@@ -21,4 +23,4 @@ export const productsSchema = z.object({
   limit: z.number(),
 });
 
-export type ProductType = z.infer<typeof productsSchema>;
+export type ProductsType = z.infer<typeof productsSchema>;
