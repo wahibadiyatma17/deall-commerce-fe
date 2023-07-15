@@ -41,15 +41,9 @@ const MobileNavigation: FC<MobileNavigationProps> = (props) => {
           tw="ml-4"
         />
         <div tw="flex gap-2 items-center">
-          <div tw="relative w-[3.5rem] h-[3.5rem]">
-            <Image
-              src={'/icons/icon-pbm-logo.png'}
-              alt="logo"
-              fill
-              style={{ objectFit: 'contain' }}
-            />
+          <div tw="relative w-[5rem] h-[5rem]">
+            <Image src={'/dealls-mobile.svg'} alt="logo" fill style={{ objectFit: 'contain' }} />
           </div>
-          <h3 tw="font-semibold">Deall Commerce</h3>
         </div>
         <div />
       </div>
