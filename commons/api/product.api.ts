@@ -1,7 +1,7 @@
 import { ApiOf, makeApi, Zodios } from '@zodios/core';
 import { ZodiosHooks } from '@zodios/react';
 import z from 'zod';
-import { productsSchema } from '../schema/product.schema';
+import { categoriesSchema, productsSchema } from '../schema/product.schema';
 
 export const BASE_URL = 'https://dummyjson.com/';
 
@@ -30,6 +30,13 @@ export const productApi = makeApi([
       { name: 'skip', type: 'Query', schema: z.number().optional() },
       { name: 'select', type: 'Query', schema: z.string().optional() },
     ],
+  },
+  {
+    method: 'get',
+    path: '/products/categories',
+    alias: 'getAllCategories',
+    description: 'get all categories',
+    response: categoriesSchema,
   },
 ]);
 

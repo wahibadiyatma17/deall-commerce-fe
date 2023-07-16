@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout';
 import { Spinner } from '@chakra-ui/react';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { FiFilter, FiSearch } from 'react-icons/fi';
 import { IoClose } from 'react-icons/io5';
 import { css, styled } from 'twin.macro';
@@ -14,6 +14,8 @@ import { Table } from '@/components/Table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useDebounce } from 'usehooks-ts';
 import FilterModal from './component/FilterModal';
+import { Select } from '@/components/Forms/Select';
+import { SelectOptionProps } from '@/commons/type/input.type';
 
 const Product: FC = () => {
   const [searchProduct, setSearchProduct] = useState('');
@@ -21,6 +23,7 @@ const Product: FC = () => {
   const [pageSize, setPageSize] = useState<number>(10);
   const [filterActive, setFilterActive] = useState<Array<string>>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
+  const [activeCategory, setActiveCategory] = useState<SelectOptionProps>();
 
   const handlePageSizeChange = (size: number) => {
     setTimeout(() => {
@@ -43,6 +46,18 @@ const Product: FC = () => {
       skip: convertedPaginationParams().skip,
     },
   });
+
+  const { data: categoriesData, isLoading: isCategoriesLoading } =
+    productApiHooks.useGetAllCategories();
+
+  const categoriesOptions = useMemo(() => {
+    let options: Array<SelectOptionProps> = [];
+
+    categoriesData?.map((category: string) => {
+      options.push({ label: convertToTitleCase(category), value: category });
+    });
+    return options;
+  }, [categoriesData]);
 
   const maxPaginationPage = productData?.total! / pageSize;
 
@@ -76,29 +91,41 @@ const Product: FC = () => {
       <StyledProductHome>
         <div className="procurement__header">
           <div tw="flex items-center gap-4 flex-wrap justify-between w-full ">
-            <div tw="md:(w-[320px]) w-full h-[32px]">
-              <Input
-                name={'search'}
-                type={'text'}
-                customPrefix={<FiSearch />}
-                placeholder={'Search product title'}
-                value={searchProduct}
-                onChange={(event: any) => {
-                  setSearchProduct(event.target.value);
-                  setPage(1);
-                }}
-                suffix={
-                  searchProduct !== '' && (
-                    <IoClose
-                      size={20}
-                      onClick={() => {
-                        setSearchProduct('');
-                      }}
-                      tw="cursor-pointer"
-                    />
-                  )
-                }
-              />
+            <div tw="flex items-center gap-4">
+              <div tw="md:(w-[320px]) w-full h-[32px]">
+                <Input
+                  name={'search'}
+                  type={'text'}
+                  customPrefix={<FiSearch />}
+                  placeholder={'Search product title'}
+                  value={searchProduct}
+                  onChange={(event: any) => {
+                    setSearchProduct(event.target.value);
+                    setPage(1);
+                  }}
+                  suffix={
+                    searchProduct !== '' && (
+                      <IoClose
+                        size={20}
+                        onClick={() => {
+                          setSearchProduct('');
+                        }}
+                        tw="cursor-pointer"
+                      />
+                    )
+                  }
+                />
+              </div>
+              {!isCategoriesLoading && (
+                <div tw="md:(w-[320px]) w-full h-[32px]">
+                  <Select
+                    options={categoriesOptions}
+                    value={activeCategory}
+                    onChange={(e) => setActiveCategory(e)}
+                    placeholder={'Select category'}
+                  />
+                </div>
+              )}
             </div>
             <div
               css={classesCategoryFilterCss(filterActive.length !== 0)}
