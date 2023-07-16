@@ -24,10 +24,11 @@ const HomeMenuCard: FC<HomeMenuCardProps> = (props) => {
             _hover={{
               color: '#fff',
             }}
+            color={'#601bd0'}
             as={icon}
           />
         )}
-        <h3 tw="text-center">{title}</h3>
+        <h3 tw="text-center ">{title}</h3>
       </div>
     </StyledHomeMenuCard>
   );
@@ -67,7 +68,7 @@ const StyledHomeMenuCard = styled.div`
 
   h3 {
     font-weight: 600;
-    color: #555555;
+    color: #601bd0;
     text-align: center;
     ${tw`text-lg`}
   }

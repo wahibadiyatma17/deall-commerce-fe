@@ -131,10 +131,15 @@ const Product: FC = () => {
     }),
   ];
 
+  const onAdvancedFilterClick = () => {
+    if (!!!searchProduct && !!!productFilterStore.categoryFilter) setIsFilterModalOpen(true);
+    else setIsFilterModalOpen(false);
+  };
+
   return (
     <Layout>
       <StyledProductHome>
-        <div className="procurement__header">
+        <div className="product__header">
           <div tw="flex items-center gap-4 flex-wrap justify-between w-full ">
             <div tw="flex items-center gap-4 flex-wrap">
               <div tw="md:(w-[320px]) w-full h-[32px]">
@@ -195,7 +200,7 @@ const Product: FC = () => {
             </div>
             <div
               css={classesCategoryFilterCss(!!productFilterStore.advanceFilter)}
-              onClick={() => setIsFilterModalOpen(true)}
+              onClick={() => onAdvancedFilterClick()}
             >
               <FiFilter size={24} color={!!productFilterStore.advanceFilter ? '#fff' : '#601bd0'} />
 
@@ -203,7 +208,7 @@ const Product: FC = () => {
             </div>
           </div>
         </div>
-        <div className="procurement__table__container">
+        <div className="product__table__container">
           {isProductLoading || !!!activeProductData ? (
             <div tw="w-full min-h-[320px] flex flex-col items-center justify-center gap-2">
               <Spinner
@@ -243,7 +248,7 @@ const StyledProductHome = styled.div`
   flex-direction: column;
   gap: 24px;
 
-  .procurement__header {
+  .product__header {
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -251,7 +256,7 @@ const StyledProductHome = styled.div`
     gap: 16px;
   }
 
-  .procurement__table__container {
+  .product__table__container {
     width: 100%;
     height: max-content;
     display: flex;
@@ -260,7 +265,7 @@ const StyledProductHome = styled.div`
   }
 
   @media (min-width: 80rem) {
-    .procurement__header {
+    .product__header {
       flex-wrap: nowrap;
       gap: 0px;
     }

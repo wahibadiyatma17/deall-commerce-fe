@@ -24,6 +24,8 @@ const MobileNavigation: FC<MobileNavigationProps> = (props) => {
       setPageTitle('Product');
     } else if (router.pathname === '/cart') {
       setPageTitle('Cart');
+    } else {
+      setPageTitle('Cart Detail');
     }
   }, []);
 
