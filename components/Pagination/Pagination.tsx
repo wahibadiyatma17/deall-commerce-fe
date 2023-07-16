@@ -1,9 +1,9 @@
-import React, { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 import { styled } from 'twin.macro';
 
+import { DOTS, usePagination } from 'commons/hooks/pagination.hooks';
 import { PaginationProps, StyledPaginationProps } from 'commons/type/pagination.type';
-import { usePagination, DOTS } from 'commons/hooks/pagination.hooks';
 
 const Pagination: FC<PaginationProps> = (props) => {
   const { maxPage, pageSize, currentPage, onPageChange, onPageSizeChange } = props;

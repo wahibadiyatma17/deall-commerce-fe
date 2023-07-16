@@ -1,8 +1,7 @@
-import Image from 'next/image';
-import { FC } from 'react';
-import tw, { styled } from 'twin.macro';
-import { IconType } from 'react-icons';
 import { Icon } from '@chakra-ui/react';
+import { FC } from 'react';
+import { IconType } from 'react-icons';
+import tw, { styled } from 'twin.macro';
 
 interface BaseHomeMenuCardProps {
   onClick: () => void;

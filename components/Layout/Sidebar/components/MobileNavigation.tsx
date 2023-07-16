@@ -1,13 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
 import { Avatar, IconButton, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import Image from 'next/image';
-import router, { useRouter } from 'next/router';
-import { useWindowSize } from 'usehooks-ts';
-import { FiMenu, FiChevronDown } from 'react-icons/fi';
+import router from 'next/router';
+import { FC, useEffect, useState } from 'react';
+import { FiChevronDown, FiMenu } from 'react-icons/fi';
 import { IoLogInOutline } from 'react-icons/io5';
-import { useQueryClient } from 'react-query';
-import toast from 'react-hot-toast';
 import 'twin.macro';
+import { useWindowSize } from 'usehooks-ts';
 
 interface BaseMobileNavigationProps {
   onOpen: () => void;

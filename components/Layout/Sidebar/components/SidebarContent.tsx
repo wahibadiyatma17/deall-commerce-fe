@@ -1,7 +1,7 @@
 import { CloseButton } from '@chakra-ui/react';
+import Image from 'next/image';
 import { FC } from 'react';
 import 'twin.macro';
-import Image from 'next/image';
 
 import NavigationItem, { StyledNavigationItem } from './NavigationItem';
 
@@ -21,7 +21,7 @@ const SidebarContent: FC<SidebarContentProps> = (props) => {
   const { onClose } = props;
 
   const isMobile = useWindowSize().width < 768;
-  const router = useRouter();
+
   return (
     <div tw="fixed flex flex-col gap-4 h-full w-full border-r-[1px] border-solid bg-white md:(w-[15rem] py-4 )">
       <div tw="flex justify-between items-center mx-6 my-4">
@@ -33,9 +33,11 @@ const SidebarContent: FC<SidebarContentProps> = (props) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </div>
       {LinkItems.map((link) => (
-        <NavigationItem icon={link.icon} url={link.url}>
-          {link.name}
-        </NavigationItem>
+        <div tw="w-full" key={link.name}>
+          <NavigationItem icon={link.icon} url={link.url}>
+            {link.name}
+          </NavigationItem>
+        </div>
       ))}
       {isMobile && (
         <StyledNavigationItem onClick={() => {}}>
