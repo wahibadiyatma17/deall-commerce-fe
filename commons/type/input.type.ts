@@ -24,6 +24,6 @@ export type InputProps = BaseInputProps & React.InputHTMLAttributes<HTMLInputEle
 export type ControlledInputProps = InputProps & BaseControlledInputProps;
 
 export interface SelectOptionProps {
-  value: string;
-  label: string;
+  value: string | undefined;
+  label: string | undefined;
 }

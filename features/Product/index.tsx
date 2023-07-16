@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout';
 import { Spinner } from '@chakra-ui/react';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { FiFilter, FiSearch } from 'react-icons/fi';
 import { IoClose } from 'react-icons/io5';
 import { css, styled } from 'twin.macro';
@@ -23,7 +23,7 @@ const Product: FC = () => {
   const [pageSize, setPageSize] = useState<number>(10);
   const [filterActive, setFilterActive] = useState<Array<string>>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
-  const [activeCategory, setActiveCategory] = useState<SelectOptionProps>();
+  const [activeCategory, setActiveCategory] = useState<SelectOptionProps | undefined>();
 
   const handlePageSizeChange = (size: number) => {
     setTimeout(() => {
@@ -33,7 +33,7 @@ const Product: FC = () => {
     }, 700);
   };
 
-  const debounceSearchProduct = useDebounce(searchProduct, 700);
+  const debounceSearchProduct = useDebounce(searchProduct, 500);
   const convertedPaginationParams = useCallback(
     () => convertToLimitAndSkip({ page: page, page_size: pageSize }),
     [page, pageSize, debounceSearchProduct],
@@ -46,6 +46,17 @@ const Product: FC = () => {
       skip: convertedPaginationParams().skip,
     },
   });
+
+  const { data: productByCategoryData } = productApiHooks.useProductsByCategory({
+    params: {
+      category: activeCategory?.value,
+    },
+  });
+
+  const activeProductData = useMemo(() => {
+    if (!!activeCategory && !!productByCategoryData) return productByCategoryData;
+    else return productData;
+  }, [productByCategoryData, productData]);
 
   const { data: categoriesData, isLoading: isCategoriesLoading } =
     productApiHooks.useGetAllCategories();
@@ -96,6 +107,7 @@ const Product: FC = () => {
                 <Input
                   name={'search'}
                   type={'text'}
+                  disabled={!!activeCategory}
                   customPrefix={<FiSearch />}
                   placeholder={'Search product title'}
                   value={searchProduct}
@@ -120,9 +132,22 @@ const Product: FC = () => {
                 <div tw="md:(w-[320px]) w-full h-[32px]">
                   <Select
                     options={categoriesOptions}
-                    value={activeCategory}
+                    value={activeCategory !== undefined && activeCategory}
                     onChange={(e) => setActiveCategory(e)}
                     placeholder={'Select category'}
+                    isHasChevronDown={!!!activeCategory}
+                    disabled={!!searchProduct}
+                    suffix={
+                      !!activeCategory && (
+                        <IoClose
+                          size={20}
+                          onClick={() => {
+                            setActiveCategory(undefined);
+                          }}
+                          tw="cursor-pointer"
+                        />
+                      )
+                    }
                   />
                 </div>
               )}
@@ -138,7 +163,7 @@ const Product: FC = () => {
           </div>
         </div>
         <div className="procurement__table__container">
-          {isProductLoading ? (
+          {isProductLoading || !!!activeProductData ? (
             <div tw="w-full min-h-[320px] flex flex-col items-center justify-center gap-2">
               <Spinner
                 size={'lg'}
@@ -151,7 +176,7 @@ const Product: FC = () => {
             </div>
           ) : (
             <>
-              <Table data={productData?.products} columns={columns} isPaginated={false} />
+              <Table data={activeProductData?.products} columns={columns} isPaginated={false} />
               <Pagination
                 currentPage={page}
                 onPageChange={(page: number) => setPage(page)}

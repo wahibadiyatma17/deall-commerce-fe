@@ -33,6 +33,20 @@ export const productApi = makeApi([
   },
   {
     method: 'get',
+    path: '/products/category/:category',
+    alias: 'productsByCategory',
+    description: 'get all products by category',
+    response: productsSchema,
+    parameters: [
+      { name: 'category', type: 'Path', schema: z.string().optional() },
+      { name: 'q', type: 'Query', schema: z.string().optional() },
+      { name: 'limit', type: 'Query', schema: z.number().optional() },
+      { name: 'skip', type: 'Query', schema: z.number().optional() },
+      { name: 'select', type: 'Query', schema: z.string().optional() },
+    ],
+  },
+  {
+    method: 'get',
     path: '/products/categories',
     alias: 'getAllCategories',
     description: 'get all categories',
