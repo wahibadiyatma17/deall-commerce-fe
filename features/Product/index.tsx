@@ -1,9 +1,9 @@
 import Layout from '@/components/Layout';
 import { Spinner } from '@chakra-ui/react';
 import { FC, useCallback, useState } from 'react';
-import { FiSearch } from 'react-icons/fi';
+import { FiFilter, FiSearch } from 'react-icons/fi';
 import { IoClose } from 'react-icons/io5';
-import { styled } from 'twin.macro';
+import { css, styled } from 'twin.macro';
 
 import { productApiHooks } from '@/commons/api/product.api';
 import { ProductType } from '@/commons/schema/product.schema';
@@ -13,11 +13,14 @@ import { Pagination } from '@/components/Pagination';
 import { Table } from '@/components/Table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useDebounce } from 'usehooks-ts';
+import FilterModal from './component/FilterModal';
 
 const Product: FC = () => {
   const [searchProduct, setSearchProduct] = useState('');
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [filterActive, setFilterActive] = useState<Array<string>>([]);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
 
   const handlePageSizeChange = (size: number) => {
     setTimeout(() => {
@@ -72,7 +75,7 @@ const Product: FC = () => {
     <Layout>
       <StyledProductHome>
         <div className="procurement__header">
-          <div tw="flex items-center gap-4 flex-wrap w-full md:w-[unset]">
+          <div tw="flex items-center gap-4 flex-wrap justify-between w-full ">
             <div tw="md:(w-[320px]) w-full h-[32px]">
               <Input
                 name={'search'}
@@ -96,6 +99,14 @@ const Product: FC = () => {
                   )
                 }
               />
+            </div>
+            <div
+              css={classesCategoryFilterCss(filterActive.length !== 0)}
+              onClick={() => setIsFilterModalOpen(true)}
+            >
+              <FiFilter size={24} color={filterActive.length !== 0 ? '#fff' : '#601bd0'} />
+
+              <span>Advanced Filter</span>
             </div>
           </div>
         </div>
@@ -125,6 +136,9 @@ const Product: FC = () => {
           )}
         </div>
       </StyledProductHome>
+      {isFilterModalOpen && (
+        <FilterModal isOpen={isFilterModalOpen} onClose={() => setIsFilterModalOpen(false)} />
+      )}
     </Layout>
   );
 };
@@ -157,5 +171,30 @@ const StyledProductHome = styled.div`
       flex-wrap: nowrap;
       gap: 0px;
     }
+  }
+`;
+
+const classesCategoryFilterCss = (isFilterActive: boolean) => css`
+  display: flex;
+  padding: 0.25rem 0.5rem;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 12px;
+  background: ${isFilterActive ? '#601bd0' : '#fff'};
+  height: max-content;
+  width: max-content;
+  cursor: pointer;
+  border: 1px solid #601bd0;
+
+  span {
+    color: ${isFilterActive ? '#fff' : '#601bd0'};
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+  }
+  &:hover {
+    transform: scale(1.05);
   }
 `;

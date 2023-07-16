@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
-import { ConnectForm } from 'common/utils/form';
+import { ConnectForm } from '@/commons/utils/form.utils';
 
 import Input from './TextInput';
-import { ControlledInputProps } from 'common/types/input';
+import { ControlledInputProps } from '@/commons/type/input.type';
 
 const Controlledinput: FC<ControlledInputProps> = (props) => {
   const {
