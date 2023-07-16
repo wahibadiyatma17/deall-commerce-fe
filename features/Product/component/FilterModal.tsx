@@ -17,16 +17,24 @@ const FilterModal: FC<BaseModalProps> = (props) => {
   const { handleSubmit, control, setValue } = methods;
 
   const onSubmit = async (data: any) => {
-    productFilterStore.setAdvanceFilter({
-      brand: data.brand,
-      product: data.product,
-      price: {
-        max_price: data.max_price,
-        min_price: data.min_price,
-      },
-    });
-
-    onClose();
+    if (
+      (data.brand?.length === 0 || !!!data.brand) &&
+      (!!!data.product || data.product?.length === 0) &&
+      !!!data?.price?.max_price &&
+      !!!data?.price?.min_price
+    )
+      onResetFilter();
+    else {
+      productFilterStore.setAdvanceFilter({
+        brand: data.brand,
+        product: data.product,
+        price: {
+          max_price: data.max_price,
+          min_price: data.min_price,
+        },
+      });
+      onClose();
+    }
   };
 
   const onResetFilter = () => {

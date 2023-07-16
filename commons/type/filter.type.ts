@@ -4,8 +4,8 @@ export interface AdvanceFilterType {
   brand?: SelectOptionProps[];
   product?: SelectOptionProps[];
   price?: {
-    min_price?: string;
-    max_price?: string;
+    min_price?: number;
+    max_price?: number;
   };
 }
 

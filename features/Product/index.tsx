@@ -17,6 +17,7 @@ import FilterModal from './component/FilterModal';
 import { Select } from '@/components/Forms/Select';
 import { SelectOptionProps } from '@/commons/type/input.type';
 import { useProductFilterStore } from '@/commons/store/filter.store';
+import { filterByBrand, filterByPrice, filterByTitle } from '@/commons/utils/product.utils';
 
 const Product: FC = () => {
   const [page, setPage] = useState<number>(1);
@@ -65,9 +66,31 @@ const Product: FC = () => {
 
   const activeProductData = useMemo(() => {
     if (!!productFilterStore.categoryFilter && !!productByCategoryData)
-      return productByCategoryData;
-    else return productData;
-  }, [productByCategoryData, productData]);
+      return productByCategoryData.products;
+    else if (!!productFilterStore.advanceFilter) {
+      let result = productData?.products ?? productByCategoryData?.products ?? [];
+      if (productFilterStore.advanceFilter?.brand) {
+        result = filterByBrand(
+          result,
+          productFilterStore.advanceFilter?.brand.map((data) => data.label),
+        );
+      }
+      if (productFilterStore?.advanceFilter?.product) {
+        result = filterByTitle(
+          result,
+          productFilterStore.advanceFilter?.product.map((data) => data.label),
+        );
+      }
+      if (productFilterStore?.advanceFilter?.price) {
+        result = filterByPrice(
+          result,
+          productFilterStore.advanceFilter?.price.min_price,
+          productFilterStore.advanceFilter?.price.max_price,
+        );
+      }
+      return result;
+    } else return productData?.products;
+  }, [productByCategoryData, productData, productFilterStore.advanceFilter]);
 
   const { data: categoriesData, isLoading: isCategoriesLoading } =
     productApiHooks.useGetAllCategories();
@@ -194,7 +217,7 @@ const Product: FC = () => {
             </div>
           ) : (
             <>
-              <Table data={activeProductData?.products} columns={columns} isPaginated={false} />
+              <Table data={activeProductData} columns={columns} isPaginated={false} />
               <Pagination
                 currentPage={page}
                 onPageChange={(page: number) => setPage(page)}
