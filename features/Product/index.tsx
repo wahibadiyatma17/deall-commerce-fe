@@ -16,14 +16,16 @@ import { useDebounce } from 'usehooks-ts';
 import FilterModal from './component/FilterModal';
 import { Select } from '@/components/Forms/Select';
 import { SelectOptionProps } from '@/commons/type/input.type';
+import { useProductFilterStore } from '@/commons/store/filter.store';
 
 const Product: FC = () => {
-  const [searchProduct, setSearchProduct] = useState('');
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [filterActive, setFilterActive] = useState<Array<string>>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
-  const [activeCategory, setActiveCategory] = useState<SelectOptionProps | undefined>();
+
+  const productFilterStore = useProductFilterStore();
+
+  const [searchProduct, setSearchProduct] = useState('');
 
   const handlePageSizeChange = (size: number) => {
     setTimeout(() => {
@@ -34,6 +36,14 @@ const Product: FC = () => {
   };
 
   const debounceSearchProduct = useDebounce(searchProduct, 500);
+  useEffect(() => {
+    productFilterStore.setSearchFilter(debounceSearchProduct);
+  }, [debounceSearchProduct]);
+
+  useEffect(() => {
+    setSearchProduct(productFilterStore.searchFilter);
+  }, []);
+
   const convertedPaginationParams = useCallback(
     () => convertToLimitAndSkip({ page: page, page_size: pageSize }),
     [page, pageSize, debounceSearchProduct],
@@ -49,12 +59,13 @@ const Product: FC = () => {
 
   const { data: productByCategoryData } = productApiHooks.useProductsByCategory({
     params: {
-      category: activeCategory?.value,
+      category: productFilterStore.categoryFilter?.value,
     },
   });
 
   const activeProductData = useMemo(() => {
-    if (!!activeCategory && !!productByCategoryData) return productByCategoryData;
+    if (!!productFilterStore.categoryFilter && !!productByCategoryData)
+      return productByCategoryData;
     else return productData;
   }, [productByCategoryData, productData]);
 
@@ -102,12 +113,14 @@ const Product: FC = () => {
       <StyledProductHome>
         <div className="procurement__header">
           <div tw="flex items-center gap-4 flex-wrap justify-between w-full ">
-            <div tw="flex items-center gap-4">
+            <div tw="flex items-center gap-4 flex-wrap">
               <div tw="md:(w-[320px]) w-full h-[32px]">
                 <Input
                   name={'search'}
                   type={'text'}
-                  disabled={!!activeCategory}
+                  disabled={
+                    !!productFilterStore.categoryFilter || !!productFilterStore.advanceFilter
+                  }
                   customPrefix={<FiSearch />}
                   placeholder={'Search product title'}
                   value={searchProduct}
@@ -132,17 +145,22 @@ const Product: FC = () => {
                 <div tw="md:(w-[320px]) w-full h-[32px]">
                   <Select
                     options={categoriesOptions}
-                    value={activeCategory !== undefined && activeCategory}
-                    onChange={(e) => setActiveCategory(e)}
+                    value={
+                      productFilterStore.categoryFilter !== undefined &&
+                      productFilterStore.categoryFilter
+                    }
+                    onChange={(e) => productFilterStore.setCategoryFilter(e)}
                     placeholder={'Select category'}
-                    isHasChevronDown={!!!activeCategory}
+                    isHasChevronDown={
+                      !!!productFilterStore.categoryFilter || !!productFilterStore.advanceFilter
+                    }
                     disabled={!!searchProduct}
                     suffix={
-                      !!activeCategory && (
+                      !!productFilterStore.categoryFilter && (
                         <IoClose
                           size={20}
                           onClick={() => {
-                            setActiveCategory(undefined);
+                            productFilterStore.setCategoryFilter(undefined);
                           }}
                           tw="cursor-pointer"
                         />
@@ -153,10 +171,10 @@ const Product: FC = () => {
               )}
             </div>
             <div
-              css={classesCategoryFilterCss(filterActive.length !== 0)}
+              css={classesCategoryFilterCss(!!productFilterStore.advanceFilter)}
               onClick={() => setIsFilterModalOpen(true)}
             >
-              <FiFilter size={24} color={filterActive.length !== 0 ? '#fff' : '#601bd0'} />
+              <FiFilter size={24} color={!!productFilterStore.advanceFilter ? '#fff' : '#601bd0'} />
 
               <span>Advanced Filter</span>
             </div>

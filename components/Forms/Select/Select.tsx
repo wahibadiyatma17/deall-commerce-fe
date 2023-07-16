@@ -68,7 +68,7 @@ const CustomSelect: FC<CustomSelectProps> = React.forwardRef(
         borderBottom: 0,
         color: '#393938',
         fontSize: '0.875rem',
-        backgroundColor: state.isFocused ? '#FDF2CA' : '#FFFFFF',
+        backgroundColor: state.isFocused ? '#d6c1f9' : '#FFFFFF',
         overflowY: 'hidden',
       }),
       menuList: (base: any) => ({
@@ -82,7 +82,7 @@ const CustomSelect: FC<CustomSelectProps> = React.forwardRef(
         ...provided,
         borderBottom: 0,
         color: '#393938',
-        backgroundColor: state.isFocused ? '#FDF2CA' : '#FFFFFF',
+        backgroundColor: state.isFocused ? '#d6c1f9' : '#FFFFFF',
         width: '100%',
         zIndex: 999,
       }),
@@ -111,15 +111,15 @@ const CustomSelect: FC<CustomSelectProps> = React.forwardRef(
       multiValue: (defaultStyles: any) => {
         return {
           ...defaultStyles,
-          backgroundColor: '#FDF2CA',
-          color: '#EAA249',
+          backgroundColor: '#d6c1f9',
+          color: '#601bd0',
           borderRadius: '0.25rem',
         };
       },
       multiValueLabel: (defaultStyles: any) => {
         return {
           ...defaultStyles,
-          color: '#EAA249',
+          color: '#601bd0',
           fontWeight: 600,
         };
       },
@@ -227,7 +227,7 @@ export const StyledSelectContainer = styled.div<
   background-color: ${({ disabled, readOnly }) => (disabled || readOnly ? '#F0F0F0' : '#FFFFFF')};
 
   &:focus-within {
-    border: 1px solid #eaa249;
+    border: 1px solid #601bd0;
     background-color: #ffffff;
   }
 

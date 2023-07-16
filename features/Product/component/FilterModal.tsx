@@ -1,25 +1,39 @@
+import { useProductFilterStore } from '@/commons/store/filter.store';
 import { SelectOptionProps } from '@/commons/type/input.type';
 import { BaseModalProps } from '@/commons/type/modal.type';
 import { ControlledSelect } from '@/components/Forms/Select';
 import { ControlledTextInput } from '@/components/Forms/Text';
 import { PopUpModal } from '@/components/Modals';
-import React, { FC } from 'react';
+import { Spinner } from '@chakra-ui/react';
+import React, { FC, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { styled } from 'twin.macro';
 
 const FilterModal: FC<BaseModalProps> = (props) => {
   const { isOpen, onClose } = props;
+  const productFilterStore = useProductFilterStore();
 
   const methods = useForm();
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = methods;
+  const { handleSubmit, control, setValue } = methods;
 
   const onSubmit = async (data: any) => {
+    productFilterStore.setAdvanceFilter({
+      brand: data.brand,
+      product: data.product,
+      price: {
+        max_price: data.max_price,
+        min_price: data.min_price,
+      },
+    });
+
     onClose();
   };
+
+  const onResetFilter = () => {
+    productFilterStore.clearAdvanceFilter();
+    onClose();
+  };
+
   return (
     <PopUpModal
       isOpen={isOpen}
@@ -40,9 +54,10 @@ const FilterModal: FC<BaseModalProps> = (props) => {
                   <div tw="flex flex-col w-full gap-2">
                     <label tw="font-medium text-sm">Brand</label>
                     <ControlledSelect
-                      name="product_brand"
-                      isMulti
+                      name="brand"
                       control={control}
+                      isMulti
+                      defaultValue={productFilterStore.advanceFilter?.brand}
                       options={PRODUCT_BRAND_OPTIONS}
                       placeholder={'choose product brand'}
                     />
@@ -50,9 +65,10 @@ const FilterModal: FC<BaseModalProps> = (props) => {
                   <div tw="flex flex-col w-full gap-2">
                     <label tw="font-medium text-sm">Product</label>
                     <ControlledSelect
-                      name="product_name"
-                      isMulti
+                      name="product"
                       control={control}
+                      isMulti
+                      defaultValue={productFilterStore.advanceFilter?.product}
                       options={PRODUCT_NAME_OPTIONS}
                       placeholder={'choose product'}
                     />
@@ -65,6 +81,7 @@ const FilterModal: FC<BaseModalProps> = (props) => {
                           name="min_price"
                           customPrefix="$"
                           type="number"
+                          defaultValue={productFilterStore.advanceFilter?.price?.min_price}
                           control={control}
                           placeholder={'Input min price'}
                         />
@@ -74,6 +91,7 @@ const FilterModal: FC<BaseModalProps> = (props) => {
                           name="max_price"
                           customPrefix="$"
                           type="number"
+                          defaultValue={productFilterStore.advanceFilter?.price?.max_price}
                           control={control}
                           placeholder={'Input max price'}
                         />
@@ -88,8 +106,13 @@ const FilterModal: FC<BaseModalProps> = (props) => {
       </PopUpModal.Body>
       <PopUpModal.Footer paddingY={0} paddingX={'20px'}>
         <StyledFilterModalFooter tw="flex flex-col w-full gap-2 transition-all">
-          <div className="button__reset">Reset Filter</div>
-          <div className="button__apply">Apply Filter</div>
+          <button className="button__reset" onClick={() => onResetFilter()}>
+            Reset Filter
+          </button>
+
+          <button className="button__apply" type="submit" form="hook-form">
+            Apply Filter
+          </button>
         </StyledFilterModalFooter>
       </PopUpModal.Footer>
     </PopUpModal>
