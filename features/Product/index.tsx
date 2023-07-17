@@ -58,11 +58,12 @@ const Product: FC = () => {
     },
   });
 
-  const { data: productByCategoryData } = productApiHooks.useProductsByCategory({
-    params: {
-      category: productFilterStore.categoryFilter?.value,
-    },
-  });
+  const { data: productByCategoryData, isLoading: isProductByCategoryLoading } =
+    productApiHooks.useProductsByCategory({
+      params: {
+        category: productFilterStore.categoryFilter?.value,
+      },
+    });
 
   const activeProductData = useMemo(() => {
     if (!!productFilterStore.categoryFilter && !!productByCategoryData)
@@ -104,7 +105,11 @@ const Product: FC = () => {
     return options;
   }, [categoriesData]);
 
-  const maxPaginationPage = productData?.total! / pageSize;
+  const maxPaginationPage = useMemo(() => {
+    if (!!productFilterStore.categoryFilter && !!productByCategoryData)
+      return productByCategoryData?.total! / pageSize;
+    else return productData?.total! / pageSize;
+  }, [productData, productByCategoryData]);
 
   const columnHelper = createColumnHelper<ProductType>();
 
@@ -209,7 +214,7 @@ const Product: FC = () => {
           </div>
         </div>
         <div className="product__table__container">
-          {isProductLoading || !!!activeProductData ? (
+          {isProductLoading || isProductByCategoryLoading || !!!activeProductData ? (
             <div tw="w-full min-h-[320px] flex flex-col items-center justify-center gap-2">
               <Spinner
                 size={'lg'}

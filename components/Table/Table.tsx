@@ -30,7 +30,7 @@ const Table: React.FC<TableProps> = (props) => {
       if (!!pageSize) table.setPageSize(pageSize);
       else table.setPageSize(data.length);
     }
-  }, [isPaginated, pageSize]);
+  }, [isPaginated, pageSize, data]);
 
   return (
     <>
